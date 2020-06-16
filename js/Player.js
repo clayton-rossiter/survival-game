@@ -21,8 +21,9 @@ export default class Player extends Phaser.Physics.Matter.Sprite {
         });
         this.setExistingBody(compoundBody);
         this.setFixedRotation();
-        // close object collision, e.g. whacking stuff
+        // close object collision, e.g. whacking stuff, pickups
         this.createMiningCollisions(playerSensor);
+        this.createPickupCollisions(playerCollider);
 
         // orientation of player/weapon
         this.scene.input.on('pointermove', pointer => this.setFlipX(pointer.worldX < this.x));
@@ -112,5 +113,23 @@ export default class Player extends Phaser.Physics.Matter.Sprite {
                 gameObject.destroy();
             }
         })
+    }
+
+    createPickupCollisions(playerCollider){
+        this.scene.matterCollision.addOnCollideStart({
+            objectA:[playerCollider],
+            callback: other => {
+                if(other.gameObjectB && other.gameObjectB.pickup) other.gameObjectB.pickup();
+            },
+            context: this.scene,
+        });
+        
+        this.scene.matterCollision.addOnCollideActive({
+            objectA:[playerCollider],
+            callback: other => {
+                if(other.gameObjectB && other.gameObjectB.pickup) other.gameObjectB.pickup();
+            },
+            context: this.scene,
+        });
     }
 }
