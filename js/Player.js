@@ -29,7 +29,7 @@ export default class Player extends MatterEntity{
         this.createPickupCollisions(playerCollider);
 
         // orientation of player/weapon
-        this.scene.input.on('pointermove', pointer => this.setFlipX(pointer.worldX < this.x));
+        this.scene.input.on('pointermove', pointer => { if (!this.dead) this.setFlipX(pointer.worldX < this.x)});
     }
 
     static preload(scene){
@@ -38,11 +38,15 @@ export default class Player extends MatterEntity{
         scene.load.spritesheet('items', 'assets/images/items.png',{frameWidth:32, frameHeight:32});
     }
 
-    // get velocity(){
-    //     return this.body.velocity;
-    // }
+    onDeath = () => {
+        this.anims.stop();
+        this.setTexture('items', 0);
+        this.setOrigin(0.5);
+        this.spriteWeapon.destroy();
+    }
 
     update(){
+        if (this.dead) return;
         const speed = 5;
         let playerVelocity = new Phaser.Math.Vector2();
         if(this.inputKeys.left.isDown){
