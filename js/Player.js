@@ -3,6 +3,7 @@ export default class Player extends Phaser.Physics.Matter.Sprite {
         // add scene terrain
         let {scene,x,y,texture,frame} = data;
         super(scene.matter.world,x,y,texture,frame);
+        this.touching = []; // blank array for touching elements
         this.scene.add.existing(this);
 
         // add character weapon
@@ -20,6 +21,8 @@ export default class Player extends Phaser.Physics.Matter.Sprite {
         });
         this.setExistingBody(compoundBody);
         this.setFixedRotation();
+        // close object collision, e.g. whacking stuff
+        this.createMiningCollisions(playerSensor);
 
         // orientation of player/weapon
         this.scene.input.on('pointermove', pointer => this.setFlipX(pointer.worldX < this.x));
@@ -70,6 +73,7 @@ export default class Player extends Phaser.Physics.Matter.Sprite {
         }
         // reset angle of pickaxe
         if(this.weaponRotation > 100){
+            this.whackStuff();
             this.weaponRotation = 0;
         }
         
@@ -79,5 +83,34 @@ export default class Player extends Phaser.Physics.Matter.Sprite {
         } else {
             this.spriteWeapon.setAngle(this.weaponRotation);
         }
+    }
+
+    createMiningCollisions(playerSensor){
+        this.scene.matterCollision.addOnCollideStart({
+            objectA:[playerSensor],
+            callback: other => {
+                if (other.bodyB.isSensor) return;
+                this.touching.push(other.gameObjectB);
+            },
+            context: this.scene,
+        });
+        // only add collider if not already included
+        this.scene.matterCollision.addOnCollideEnd({
+            objectA:[playerSensor],
+            callback: other => {
+                this.touching = this.touching.filter(gameObject => gameObject != other.gameObjectB);
+            },
+            context: this.scene,
+        });
+    }
+
+    whackStuff(){
+        this.touching.filter(gameObject => gameObject.hit && !gameObject.dead);
+        this.touching.forEach(gameObject => {
+            gameObject.hit();
+            if (gameObject.dead){
+                gameObject.destroy();
+            }
+        })
     }
 }
