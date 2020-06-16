@@ -49,7 +49,10 @@ export default class Enemy extends MatterEntity {
     }
 
     update() {
+        // don't do anything if dead
         if (this.dead) return;
+
+        // player chase AI
         if (this.attacking) {
             let direction = this.attacking.position.subtract(this.position);
             if(direction.length()>24) {
@@ -66,5 +69,15 @@ export default class Enemy extends MatterEntity {
                 }
             }
         }
+        
+        // enemy movement animation
+        if(Math.abs(this.velocity.x) > 0.1 || Math.abs(this.velocity.y) > 0.1) {
+            this.anims.play(`${this.name}_walk`, true);
+        } else {
+            this.anims.play(`${this.name}_idle`, true);
+        }
+
+        // change orientation of enemy depending which direction it is moving
+        this.setFlipX(this.velocity.x < 0);
     }
 }
