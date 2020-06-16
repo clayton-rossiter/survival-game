@@ -1,0 +1,52 @@
+{
+    "anims": [
+        {
+            "key": "player_walk",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "player",
+                    "frame": "thief_walk_1"
+                },
+                {
+                    "key": "player",
+                    "frame": "thief_walk_2"
+                },
+                {
+                    "key": "player",
+                    "frame": "thief_walk_3"
+                },
+                {
+                    "key": "player",
+                    "frame": "thief_walk_4"
+                }
+            ]
+        },
+        {
+            "key": "player_idle",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "player",
+                    "frame": "thief_idle_1"
+                },
+                {
+                    "key": "player",
+                    "frame": "thief_idle_2"
+                },
+                {
+                    "key": "player",
+                    "frame": "thief_idle_3"
+                },
+                {
+                    "key": "player",
+                    "frame": "thief_idle_4"
+                }
+            ]
+        }
+    ]
+}
