@@ -9,6 +9,9 @@ https://www.mapeditor.org/
 Sprites/Character images were downloaded from:  
 https://superdark.itch.io/16x16-free-npc-pack/
 
+Enemy characters downloaded from:   
+https://superdark.itch.io/enchanted-forest-characters/
+
 Items/resources were downloaded from:  
 https://shikashiassets.itch.io/shikashis-fantasy-icons-pack/
 
