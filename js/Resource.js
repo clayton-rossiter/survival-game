@@ -17,7 +17,7 @@ export default class Resource extends Phaser.Physics.Matter.Sprite {
         this.name = resource.type;
         this.sound = this.scene.sound.add(this.name);
 
-        // default health
+        // default health for each resource
         this.health = 5;
 
         // load resources
@@ -30,14 +30,13 @@ export default class Resource extends Phaser.Physics.Matter.Sprite {
         this.setExistingBody(circleCollider);
         this.setStatic(true);
         this.setOrigin(0.5, yOrigin);
-
     }
 
     // when resource is destroyed
     get dead(){
         return this.health <= 0;
     }
-
+    // load sound when hit confirmed
     hit = () => {
         if(this.sound) this.sound.play();
         this.health--;
