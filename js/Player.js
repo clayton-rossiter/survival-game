@@ -6,7 +6,7 @@ export default class Player extends MatterEntity{
         // let {scene,x,y,texture,frame} = data;
         // super(scene.matter.world,x,y,texture,frame);
         super({...data, health:2, drops:[], name:'player'});
-        this.touching = []; // blank array for touching elements
+        this.touching = []; // blank array to hold touching elements
         // this.scene.add.existing(this);
 
         // add character weapon
@@ -15,6 +15,7 @@ export default class Player extends MatterEntity{
         this.spriteWeapon.setOrigin(0.25,0.75);
         this.scene.add.existing(this.spriteWeapon);
 
+        // add character detection/touching areas
         const{Body,Bodies} = Phaser.Physics.Matter.Matter;
         var playerCollider = Bodies.circle(this.x,this.y,12,{isSensor:false,label:'playerColldier'});
         var playerSensor = Bodies.circle(this.x,this.y,24,{isSensor:true,label:'playerSensor'});
@@ -24,6 +25,7 @@ export default class Player extends MatterEntity{
         });
         this.setExistingBody(compoundBody);
         this.setFixedRotation();
+
         // close object collision, e.g. whacking stuff, pickups
         this.createMiningCollisions(playerSensor);
         this.createPickupCollisions(playerCollider);
@@ -39,6 +41,7 @@ export default class Player extends MatterEntity{
     }
 
     onDeath = () => {
+        // on death, stop animations, load skull and destroy weapon
         this.anims.stop();
         this.setTexture('items', 0);
         this.setOrigin(0.5);
@@ -113,7 +116,7 @@ export default class Player extends MatterEntity{
     }
 
     whackStuff(){
-        this.touching.filter(gameObject => gameObject.hit && !gameObject.dead);
+        this.touching = this.touching.filter(gameObject => gameObject.hit && !gameObject.dead);
         this.touching.forEach(gameObject => {
             gameObject.hit();
             if (gameObject.dead){
