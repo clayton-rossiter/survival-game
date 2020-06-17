@@ -42,7 +42,7 @@ export default class Enemy extends MatterEntity {
 
     attack = (target) => {
         if (target.dead || this.dead) {
-            clearInterval(this.attacktimer);
+            clearInterval(this.attackTimer);
             return;
         }
         target.hit();
@@ -59,13 +59,13 @@ export default class Enemy extends MatterEntity {
                 let v = direction.normalize();
                 this.setVelocityX(direction.x);
                 this.setVelocityY(direction.y);
-                if (this.attacktimer) {
-                    clearInterval(this.attacktimer);
-                    this.attacktimer = null;
+                if (this.attackTimer) {
+                    clearInterval(this.attackTimer);
+                    this.attackTimer = null;
                 }
             } else {
-                if (this.attacktimer == null) {
-                    this.attacktimer = setInterval(this.attack, 500, this.attacking);
+                if (this.attackTimer == null) {
+                    this.attackTimer = setInterval(this.attack, 500, this.attacking);
                 }
             }
         }
